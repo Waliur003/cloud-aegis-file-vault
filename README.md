@@ -1,4 +1,4 @@
-## Cloud Security Engineering Project 01: The Secure File Vault (Enterprise Data Protection & Zero-Trust Architecture)
+## Cloud Engineering Project 01: The Secure File Vault (Enterprise Data Protection & Zero-Trust Architecture)
 
 ---
 
@@ -132,11 +132,11 @@ secure-file-vault-infrastructure/
 
 #### Verified Cryptographic Ingestion Performance
 
-Uploaded a sample object to the secure S3 vault via terminal interfaces. Review of the target object configuration properties verified that the asset was rejected until the transmission included headers matching the custom Customer Managed Key. The file was successfully encrypted at rest using the designated AES-256 KMS scheme.
+Uploaded a sample object (`test-file.txt`) to the secure `sun-secure-vault-2026` S3 vault via terminal interfaces. Review of the target object configuration properties verified that the asset was rejected until the transmission included headers matching the custom Customer Managed Key. The file was successfully encrypted at rest using the designated AES-256 KMS scheme.
 
-#### Validated Public Access Isolation
+#### Validated Public Access Isolation (Zero-Trust Access Control)
 
-Attempted an anonymous HTTP direct download request against the object URL from outside the corporate cloud perimeter. The storage gateway successfully blocked the transaction, returning a hard `HTTP 403 Forbidden` error response, proving the public access blocks are operating correctly.
+Attempted an anonymous, unauthenticated HTTP direct download request via an Incognito browser session targeting the explicit object URL: `[https://sun-secure-vault-2026.s3.us-east-1.amazonaws.com/test-file.txt](https://sun-secure-vault-2026.s3.us-east-1.amazonaws.com/test-file.txt)`. The storage perimeter successfully intercepted and blocked the unauthorized external request at the API gateway layer. The storage vault returned a strict `<Code>AccessDenied</Code>` and `HTTP 403 Forbidden` payload, confirming that the Public Access Blocks are fully insulating internal assets from open internet vulnerabilities.
 
 #### Confirmed Multi-Factor Identity Gateways
 
@@ -154,17 +154,40 @@ Reviewed the audit tracking logs stored within the dedicated CloudTrail S3 bucke
 
 * **Console View:** Screenshot of the Amazon S3 Properties interface for the storage vault, displaying Default Encryption set to SSE-KMS using the explicit custom Customer Managed Key ARN.
 
+<img width="1919" height="910" alt="Screenshot 1" src="https://github.com/user-attachments/assets/c7512d29-731d-48c1-a99a-3bf78f49ee34" />
+
+
 #### Public Access Block Enforcement
 
 * **Console View:** Screenshot of the Amazon S3 Permissions tab showing "Block *all* public access" turned ON with all four sub-checkboxes checked, indicating complete exposure mitigation.
+  
+<img width="1919" height="874" alt="Screenshot 2" src="https://github.com/user-attachments/assets/e8428aae-27fb-4ee8-bd33-93ceb6196b3b" />
+
 
 #### Cognito MFA Security Configuration
 
 * **Console View:** Screenshot of the Amazon Cognito Sign-in Security interface, verifying that Multi-Factor Authentication is set to "Required" with Time-Based One-Time Password (TOTP) as the active method.
+  
+<img width="1917" height="904" alt="Screenshot 3" src="https://github.com/user-attachments/assets/9147b22b-e6a2-4bc6-b3c6-42b044d6391e" />
+
 
 #### CloudTrail Object-Level Tracking Status
 
 * **Console View:** Screenshot of the AWS CloudTrail configuration dashboard, demonstrating an active trail with Data Events configured specifically to intercept all read/write S3 operations within the file vault bucket.
+
+<img width="1919" height="910" alt="Screenshot 4" src="https://github.com/user-attachments/assets/9c7e303b-9072-4b44-b267-5ec406145d47" />
+
+<img width="1919" height="910" alt="Screenshot 6" src="https://github.com/user-attachments/assets/bc91d943-831b-4e70-97a0-897a2634f604" />
+
+<img width="1919" height="895" alt="Screenshot 5" src="https://github.com/user-attachments/assets/506446ba-1d63-47b1-aaaf-d095c72006bd" />
+
+
+#### Public Access Block Enforcement & Access Denied Output
+
+Refer to the verification image named **image_7a93a3.png**. This screenshot documents an active, unauthenticated attempt to extract `test-file.txt` from `sun-secure-vault-2026.s3.us-east-1.amazonaws.com` via an Incognito browsing frame. The system completely insulates the data asset by actively executing an `AccessDenied` exception block, confirming that the global public access constraints are perfectly implemented.
+
+<img width="1919" height="517" alt="Screenshot 7" src="https://github.com/user-attachments/assets/e0b73fb6-7b8a-42f1-ad5f-bbb7963139f9" />
+
 
 ---
 
