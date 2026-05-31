@@ -1,4 +1,4 @@
-## Cloud Engineering Project 01: The Secure File Vault (Enterprise Data Protection & Zero-Trust Architecture)
+## Cloud Security Engineering Project 01: The Secure File Vault (Enterprise Data Protection & Zero-Trust Architecture)
 
 ---
 
