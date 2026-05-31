@@ -1,5 +1,3 @@
-# Repository Name: cloud-aegis-file-vault
-
 ## Cloud Security Project 01: Secure File Vault (Zero-Trust Enterprise Storage Portal)
 
 ### Overview
