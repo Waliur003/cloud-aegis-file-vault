@@ -1,164 +1,182 @@
-## Cloud Security Project 01: Secure File Vault (Zero-Trust Enterprise Storage Portal)
+## Cloud Engineering Project 01: The Secure File Vault (Enterprise Data Protection & Zero-Trust Architecture)
+
+---
 
 ### Overview
 
-I have architected and deployed a highly secure, enterprise-grade storage portal on AWS using Infrastructure as Code (IaC) primitives. This project demonstrates a production-ready, zero-trust cloud architecture designed to eliminate data exposure risks through multi-layered cryptographic isolation, mandatory multi-factor authentication (MFA), and tamper-proof audit trails. The architecture guarantees absolute data encryption at rest and in transit, restricts access dynamically via fine-grained identity boundaries, and continuously tracks data-plane operations to ensure regulatory compliance and comprehensive threat visibility. By stripping out default public configurations and replacing them with explicit security guardrails, the vault achieves absolute data insulation.
+I have architected and deployed a highly resilient, enterprise-grade data protection storage architecture on AWS using Infrastructure as Code (IaC) primitives. This project demonstrates a production-hardened, compliance-ready cloud infrastructure that achieves absolute data insulation at rest and in transit. The architecture integrates symmetric cryptographic key management, federated user identity control with mandatory multi-factor enforcement, isolated web hosting execution environments, and a tamper-proof continuous audit trailing loop. By enforcing rigid least-privilege boundaries and programmatic data lifecycle policies, the system completely mitigates data exfiltration risks and unauthorized multi-tenant access vectors while maintaining optimal storage cost-efficiency.
+
+---
 
 ### The Problem
 
-Traditional cloud storage deployments are frequently plagued by architectural misconfigurations and inadequate access controls, making them prime targets for data breaches. Legacy file-sharing methods typically display three critical security flaws:
+Modern enterprise storage platforms are targeted relentlessly by sophisticated attack vectors, where a single misconfiguration can lead to catastrophic data breaches, regulatory penalties, and loss of client trust. Traditional cloud storage implementations consistently fail due to three architectural vulnerabilities:
 
-* **Overly Permissive Access Boundaries and Public Exposure:** Relying on default storage configurations or poorly managed Access Control Lists (ACLs) frequently results in the accidental public exposure of sensitive corporate assets to the internet.
-* **Weak Authentication Paths and Credential Vulnerabilities:** Allowing users to access internal files via single-factor passwords without mandatory cryptographic verification leaves the storage layer vulnerable to credential stuffing, brute-force attacks, and compromised identity profiles.
-* **Auditing Blind Spots at the Data Plane:** While standard infrastructure logs track administrative changes, they often ignore object-level actions (e.g., reading or downloading a file). Without immutable data-plane auditing, security operations teams remain blind to unauthorized data exfiltration or internal abuse.
+* **Public Exposure and Unencrypted Repositories:** Default or improperly audited cloud storage containers frequently allow public read/write access or store sensitive files in plain text. If peripheral application perimeters fail, data at rest is exposed directly to malicious interception.
+* **Weak Identity Controls and Privilege Creep:** Monolithic credential schemes lacking multi-factor enforcement allow compromised administrative or user accounts to access high-value assets. Furthermore, granting broad, wildcard actions to application identities violates core security principles.
+* **Operational Blind Spots and Compliance Failures:** Without complete, immutable visibility into who accessed, modified, or downloaded specific corporate assets, security operations centers (SOC) cannot detect active data exfiltration patterns or verify regulatory alignment during mandatory external compliance audits.
+
+---
 
 ### The Solution
 
-* **Customer-Managed Cryptographic Isolation:** Utilized a dedicated AWS KMS Customer Managed Key (CMK) with automated annual rotation enforced, moving away from AWS-managed keys to ensure sole cryptographic ownership and explicit access control over data-at-rest.
-* **Hardened Zero-Trust Storage Perimeter:** Engineered an absolute S3 perimeter policy by enabling total Public Access Blocks, disabling legacy ACLs, and enforcing bucket versioning to mitigate ransomware risks and unauthorized data manipulation.
-* **Mandatory Multi-Factor Identity Gatekeeper:** Integrated an Amazon Cognito Identity and User Pool framework configured to strictly mandate Time-Based One-Time Password (TOTP) Authenticator app MFA before issuing short-lived, low-privilege cryptographic tokens.
-* **Tamper-Proof Continuous Data Auditing:** Deployed an isolated AWS CloudTrail engine configured with Log File Validation enabled to record immutable, object-level S3 data events, generating a cryptographically sealed audit trail of all file interactions.
+* **Symmetric Cryptographic Isolation:** Engineered a zero-trust storage layer using Amazon S3 wrapped inside an automated, customer-managed AWS KMS cryptographic key container, ensuring all data assets are converted to encrypted strings prior to hitting physical disks.
+* **Mandatory Multi-Factor Gatekeeper:** Deployed an enterprise identity provider using Amazon Cognito configured for strict user verification and mandatory Time-Based One-Time Password (TOTP) Authenticator authentication, issuing short-lived, scoped cryptographic tokens for authorized access.
+* **Tamper-Proof Ledger and Monitoring:** Implemented an independent, continuous auditing framework via AWS CloudTrail with log-file validation enabled, executing real-time object-level data tracking to capture detailed API call metrics in an unalterable log archive.
+* **Programmatic Data Lifecycle Pruning:** Structured automated lifecycle policy engines to transition aging documents through cheaper storage tiers before executing absolute cryptographic destruction, reducing both storage overhead and the corporate data liability footprint.
 
 ---
 
 ### Tech Stack
 
-* **Data Storage Core:** Amazon S3 (Hardened Enterprise Vault Tier)
-* **Cryptographic Key Management:** AWS KMS (Symmetric Customer Managed Keys)
-* **Identity & Access Federation:** Amazon Cognito (User Pools / Short-Lived Token Brokerage)
-* **Continuous Compliance Auditing:** AWS CloudTrail (Data-Plane Event Tracing & Log Validation)
-* **Identity Governance Engine:** AWS IAM (Least-Privilege Scoped Resource Policies)
-* **Infrastructure as Code Engine:** Terraform (v1.0+ / Version-Locked Declarative Architecture)
+* **Data Storage Infrastructure:** Amazon S3 (Secure Storage Vault and Isolated Audit Logging Tiers)
+* **Cryptographic Key Management:** AWS KMS (Key Management Service / Customer Managed Keys)
+* **Identity & Access Governance:** Amazon Cognito (User Pools, App Clients, TOTP MFA Enforcement)
+* **Continuous Security Auditing:** AWS CloudTrail (Object-Level Data Event Trailing)
+* **Identity Governance Control:** AWS IAM (Least-Privilege Scoped Policy Documents and Federated Roles)
+* **IaC Engine:** Terraform (v1.0+ / Modularized Declarative Configurations)
 
 ---
 
 ### Architecture Diagram
 
-*(Placeholder for your architecture diagram showing Cognito federating identity, mapping users to temporary IAM roles, and allowing access to an S3 bucket encrypted via KMS while CloudTrail logs all actions to an isolated logging bucket.)*
-
 ---
 
 ### Project Procedure
 
-#### 1. Customer-Managed Cryptographic Key Engineering
+#### 1. Cryptographic Envelope Generation & Key Hardening
 
-I provisioned a dedicated symmetric cryptographic boundary using AWS KMS to ensure total ownership over data encryption.
+I engineered a dedicated symmetric cryptographic key management layer to isolate asset encryption from standard AWS managed keys.
 
-* **Cryptographic Policy Enforcement:** Configured the key with automated annual key rotation enabled, fulfilling key compliance framework criteria (such as SOC 2 and ISO 27001).
-* **Administrative Separation:** Defined a highly restrictive key policy that separates key administrative actions (managing the key) from key usage actions (encrypting/decrypting data), ensuring that no single identity possesses unmonitored control.
+* **Key Provisioning:** Deployed a Customer Managed Key (CMK) within AWS KMS configured exclusively for symmetric encryption and decryption actions.
+* **Automated Security Rotation:** Enforced programmatic annual key rotation parameters to systematically replace underlying cryptographic material without breaking historical file access chains.
+* **Administrative Separation:** Structured explicit key policy definitions that cleanly separate key administration privileges from key usage roles, preventing single-point-of-compromise administrative abuses.
 
-#### 2. Hardened S3 Object Store Provisioning
+#### 2. Hardened Perimeter Storage Vault Engineering
 
-I engineered a secure, zero-trust storage repository using Amazon S3, deliberately stripping out all legacy access methods.
+I constructed a multi-layered, private storage vault using Amazon S3 to act as the core repository for restricted corporate assets.
 
-* **Perimeter Hardening:** Deployed a strict `aws_s3_bucket_public_access_block` configuration, forcing all public access indicators to `true` to block accidental bucket exposure.
-* **Cryptographic Lockout:** Configured default server-side encryption to strictly utilize the custom KMS key (`SSE-KMS`) and enabled **S3 Bucket Keys** to reduce cryptographic API call costs by up to 99%.
-* **Ransomware Mitigation:** Enforced S3 Bucket Versioning to maintain an immutable history of object states, protecting the organization against destructive data overwrites or encryption-based extortion attacks.
+* **Perimeter Access Insulation:** Configured a global Public Access Block on the storage container, enabling all four isolation flags to fully override any accidental ACL or bucket policy exposures.
+* **Object Versioning Architecture:** Activated bucket versioning states to preserve historical iterations of objects, establishing a strong defense loop against malicious ransomware encryption or accidental data overrides.
+* **Cryptographic Boundary Integration:** Attached an explicit bucket-wide enforcement policy requiring all inbound `PutObject` transactions to use headers matching the custom KMS key ARN, dropping unencrypted payload attempts at the API gateway level.
 
-#### 3. MFA-Enforced Identity Federation Setup
+#### 3. Identity Federation & MFA Governance Deployment
 
-I constructed a secure authentication gateway using Amazon Cognito to serve as the user access controller.
+I built an enterprise identity provider using Amazon Cognito to control directory access boundaries before users reach the data layer.
 
-* **Mandatory MFA Policy:** Configured the User Pool security rules to require `ON` state Multi-Factor Authentication, specifically limiting validation methods to **Software Token TOTP** (Authenticator apps) while banning weak SMS channels.
-* **Token Hardening:** Configured a Public App Client to handle user pool handshakes, issuing short-lived, cryptographically signed JSON Web Tokens (JWTs) that automatically expire to reduce the token hijack window.
+* **Directory Infrastructure:** Provisioned a Cognito User Pool enforcing strict password complexity matrices and email verification workflows.
+* **MFA Mandate Configuration:** Configured the authentication engine to enforce a hard conditional status requiring Multi-Factor Authentication via Software Token TOTP applications during user sign-in.
+* **Client Abstraction Gateway:** Established a Cognito User Pool Client container to securely facilitate client-side integration and handle cryptographic token handshakes cleanly.
 
-#### 4. Immutable Data-Plane Audit Trail Deployment
+#### 4. Object-Level Security Auditing Framework
 
-To ensure complete corporate visibility and non-repudiation, I deployed a dedicated security auditing layer using AWS CloudTrail.
+To eliminate operational blind spots, I deployed an independent compliance-tracking engine using AWS CloudTrail.
 
-* **Isolated Log Storage:** Provisioned a completely separate, dedicated S3 bucket to act as the central log repository, completely isolated from the primary file vault.
-* **Data-Plane Monitoring:** Tailored the trail event selector to exclusively capture **S3 Data Events** (`Read` and `Write` API actions) targeting the file vault bucket.
-* **Tamper Eviction:** Enabled Log File Validation. This instructs CloudTrail to generate digital signatures for log files every hour, allowing security analysts to programmatically verify that audit records have not been altered or deleted by an insider threat.
-
-#### 5. Least-Privilege Identity Boundaries Formulation
-
-To securely link the Cognito identity gateway with the hardened storage repository, I formulated a strict access role architecture within AWS IAM.
-
-* **Short-Lived Credential Mapping:** Configured an IAM Role embedded with an explicit assume-role trust policy restricting identity generation solely to the Cognito Federated Identity provider principal.
-* **Zero-Wildcard Scope:** Authored a highly targeted permission document that explicitly defines permissible resource destinations by mapping individual ARNs. The policy limits actions strictly to `s3:GetObject` and `s3:PutObject` on the exact file vault bucket path, while simultaneously restricting `kms:Decrypt` and `kms:GenerateDataKey` strictly to the file vault KMS key ARN.
+* **Isolated Audit Repository:** Provisioned a separate, heavily restricted S3 logging bucket to isolate audit data from application data stores.
+* **Data Event Scoping:** Configured a localized CloudTrail instance targeting object-level data events specifically scoped to the File Vault S3 container paths, capturing all read, write, and deletion metrics.
+* **Integrity Assurance Validation:** Activated log-file validation configurations to continuously sign log files, ensuring that any malicious attempt to alter or delete historical access records triggers immediate verification failure alerts.
 
 ---
 
 ### Infrastructure as Code (IaC) Architecture
 
-To enforce the core cloud security principles of auditability, configuration consistency, and drift prevention, the entire environment is provisioned using declarative Terraform configurations.
+To enforce the core cloud engineering principles of repeatability, drift detection, and immutable infrastructure, the entire environment is provisioned using declarative Terraform configurations. The codebase is decoupled into modular component files to separate storage, identity, auditing, and cryptographic logic domains.
 
 #### Directory Layout & Modular Structure
 
 ```text
-cloud-aegis-file-vault/
-├── provider.tf      # System Provider & Version Lock Scoping
-├── variables.tf     # Environment Portability Parameter Definitions
-├── kms.tf           # Cryptographic Key Core & Policy Logic
-├── s3.tf            # Hardened S3 Vault & Isolated Log Storage
-├── cognito.tf       # MFA-Enforced User Pool Identity Gateway
-├── cloudtrail.tf    # Data-Plane Audit Trail Configuration
-└── outputs.tf       # Programmatic Resource Identifiers for Audits
+secure-file-vault-infrastructure/
+├── provider.tf
+├── variables.tf
+├── kms.tf
+├── s3.tf
+├── cognito.tf
+├── cloudtrail.tf
+└── outputs.tf
 ```
 
 #### Detailed File-by-File Technical Breakdown
 
 ##### 1. System Provider Scoping (`provider.tf`)
 
-* **Dependency Locking:** Restricts the deployment environment to lock securely against the modern AWS Provider `v5.0+` plugin ecosystem, ensuring compatibility with advanced security schemas.
-* **Region Isolation:** Binds the cloud provider footprint directly to standard geographic input parameters to prevent accidental multi-region resource sprawl.
+* **Dependency Management:** Restricts the execution context to lock securely against the modern AWS Provider plugin ecosystem (v5.0+) to utilize advanced resource schema controls.
+* **Regional Target Scoping:** Anchors the provider parameters down to standard geographic input variables to maintain consistency across continuous deployment pipelines.
 
 ##### 2. Variable Abstractions & Metadata Outputs (`variables.tf` & `outputs.tf`)
 
-* **Environment Portability:** Parameterizes resource names, compliance tags, and environment tiers, ensuring the entire secure perimeter can be cloned from staging to production flawlessly.
-* **Audit Transparency:** Outputs vital structural indicators (`vault_bucket_arn`, `kms_key_arn`, `cognito_user_pool_id`) to simplify third-party compliance reviews.
+* **Environment Portability Mapping:** Parameterizes target system parameters, environment prefixes, and naming conventions via strongly typed variables, keeping code entirely environment-agnostic.
+* **Audit-Ready Outputs:** Exposes critical deployment parameters (such as the storage bucket ARN, KMS Key ID, and Cognito Client ID) to streamline automated verification testing.
 
-##### 3. Cryptographic Key Core (`kms.tf`)
+##### 3. Cryptographic Key Definer (`kms.tf`)
 
-* **Compliance Enforcer:** Provisions the symmetric `aws_kms_key` resource with `enable_key_rotation = true` to satisfy automated compliance mandates.
-* **Alias Abstractor:** Binds a clean, user-friendly identifier (`alias/file-vault-key`) to the underlying cryptographic container string to eliminate resource mapping confusion.
+* **Symmetric Key Logic:** Deployed the `aws_kms_key` resource enabling cryptographic key rotation policies by default.
+* **Alias Abstraction:** Binds an `aws_kms_alias` resource to the underlying key container, shielding system code from explicit key ID shifts during redeployments.
 
-##### 4. Hardened Storage Perimeter (`s3.tf`)
+##### 4. Hardened Vault Storage Engine (`s3.tf`)
 
-* **Absolute Perimeter Isolation:** Groups the creation of the primary vault bucket, versioning configurations, and the explicit four-flag public access block into a highly structured resource collection.
-* **Cryptographic Attunement:** Hooks the `aws_s3_bucket_server_side_encryption_configuration` directly to the outputs of the KMS module, preventing unencrypted data ingestions.
+* **Container Allocation:** Provisions the primary storage container, attaching independent public access block resources to lock down edge security.
+* **Encryption and Key Binding:** Embeds the `aws_s3_bucket_server_side_encryption_configuration` resource block, pointing data protection parameters directly to the custom customer-managed KMS key.
 
-##### 5. Multi-Factor Identity Gateway (`cognito.tf`)
+##### 5. Identity Provider Structure (`cognito.tf`)
 
-* **Identity Fortification:** Controls user registration, password strength frameworks, and mandates software token token configurations directly through the `aws_cognito_user_pool` primitive.
-* **Token Distribution Interface:** Configures the client parameters to safely pass temporary execution tokens downstream without exposing high-level system secrets.
+* **Identity Core Configuration:** Outlines the user pool container framework, embedding specific configuration arrays to mandate MFA enrollment and secure client transport logic.
 
-##### 6. Data-Plane Audit Trail (`cloudtrail.tf`)
+##### 6. Compliance Auditor Mapping (`cloudtrail.tf`)
 
-* **Continuous Logging Router:** Provisions the `aws_cloudtrail` engine, maps it to an isolated storage container, and establishes advanced filtering blocks to focus logs strictly on object-plane read/write events.
+* **Audit Trail Orchestrator:** Allocates an immutable logging trail linked to a separate, private S3 container.
+* **Granular Selector Logic:** Maps explicit data resource filters directly to object actions inside the storage vault, ensuring every read/write action records user and token telemetry.
 
 ---
 
 ### Verification and Results
 
-#### Verified Absolute Data Encryption at Rest
+#### Verified Cryptographic Ingestion Performance
 
-Uploaded a test corporate file into the secure storage perimeter via the command line interface. Reviewing the object configuration details within the AWS environment verified that the file was immediately locked using `SSE-KMS` encryption, mapping perfectly to the specific Customer Managed Key ID.
+Uploaded a sample object to the secure S3 vault via terminal interfaces. Review of the target object configuration properties verified that the asset was rejected until the transmission included headers matching the custom Customer Managed Key. The file was successfully encrypted at rest using the designated AES-256 KMS scheme.
 
-#### Validated Public Access Defenses and Isolation
+#### Validated Public Access Isolation
 
-Attempted to access the uploaded file directly over the public internet using an unauthenticated browser request. The boundary controls functioned perfectly, returning a strict **HTTP 403 Access Denied** error, confirming the efficacy of the absolute Public Access Block.
+Attempted an anonymous HTTP direct download request against the object URL from outside the corporate cloud perimeter. The storage gateway successfully blocked the transaction, returning a hard `HTTP 403 Forbidden` error response, proving the public access blocks are operating correctly.
 
-#### Verified Mandatory Software Token MFA Enforcement
+#### Confirmed Multi-Factor Identity Gateways
 
-Initiated a programmatic registration script against the Cognito User Pool identity layer. The identity engine successfully intercepted the login pattern, blocked direct access, and refused to distribute credentials until a valid **TOTP token handshake** was established via an Authenticator application interface.
+Executed a CLI authentication sequence against the user pool client. The identity engine successfully intercepted the request, halting the authorization loop and demanding a valid TOTP application confirmation token before provisioning short-lived AWS IAM temporary credentials.
 
-#### Confirmed Cryptographic Audit Trail Tracking
+#### Verified Immutable Trail Logs
 
-Inspected the isolated logging bucket following file upload and download test iterations. The security logs confirmed complete auditing visibility, recording precise, cryptographically signed event packets tracking the exact identity user name, source IP address, execution timestamp, and targeted file path.
+Reviewed the audit tracking logs stored within the dedicated CloudTrail S3 bucket. The ledger accurately compiled a structured log event tracking the exact user identification string, source IP address, target timestamp, and the specific `GetObject` API transaction parameters.
+
+---
+
+### Verification Screenshots
+
+#### S3 Bucket Encryption Profile
+
+* **Console View:** Screenshot of the Amazon S3 Properties interface for the storage vault, displaying Default Encryption set to SSE-KMS using the explicit custom Customer Managed Key ARN.
+
+#### Public Access Block Enforcement
+
+* **Console View:** Screenshot of the Amazon S3 Permissions tab showing "Block *all* public access" turned ON with all four sub-checkboxes checked, indicating complete exposure mitigation.
+
+#### Cognito MFA Security Configuration
+
+* **Console View:** Screenshot of the Amazon Cognito Sign-in Security interface, verifying that Multi-Factor Authentication is set to "Required" with Time-Based One-Time Password (TOTP) as the active method.
+
+#### CloudTrail Object-Level Tracking Status
+
+* **Console View:** Screenshot of the AWS CloudTrail configuration dashboard, demonstrating an active trail with Data Events configured specifically to intercept all read/write S3 operations within the file vault bucket.
 
 ---
 
 ### Future Improvements
 
-* **S3 Object Lock (WORM Compliance):** Integrate strict write-once-read-many (WORM) configurations on compliance-sensitive paths to completely protect financial or regulatory records from tampering or insider deletion attempts.
-* **Automated Data Classification (Amazon Macie):** Attach an alternate automated data classification scanning routine using Amazon Macie to continuously inspect the file vault for accidental uploads of personally identifiable information (PII) or protected health information (PHI).
-* **Anomalous Key Usage Detection:** Engineer an automated alert hook connecting AWS CloudWatch and SNS to flag and broadcast instantaneous warnings if an identity outside the authorized role attempts to call the KMS cryptographic key APIs.
+* **Asynchronous Malicious Access Alerts:** Integrate an Amazon EventBridge rule pattern to scan CloudTrail logs in real time, automatically dispatching high-severity SNS alerts if unauthorized cross-region access attempts are initiated.
+* **Automated Malware Cleansing Integration:** Introduce an alternate Lambda-driven security layer to scan newly uploaded assets for malware signatures prior to finalizing decryption clearance inside the vault.
+* **Cross-Region Read Replica Storage:** Configure an automated, cross-region replication layer utilizing isolated KMS key environments to ensure absolute disaster recovery resilience across separate geographical fault domains.
 
 ---
 
 ### Notes
 
-This architecture showcases an optimized, production-ready implementation of a secure cloud storage perimeter. It validates specialized core competencies in structuring multi-layered data encryption frameworks, zero-trust boundary isolation controls, strict multi-factor identity federation, and automated infrastructure compliance tracking.
+This project showcases specialized cloud security engineering competencies in constructing private storage frameworks, customer-managed cryptographic structures, robust identity boundaries, and automated compliance auditing loops using reusable Infrastructure as Code configurations.
 
-> **Bottom Line:** The Cloud Aegis File Vault completely eliminates common cloud storage exposures. By wrapping unvalidated files in dedicated cryptographic keys, mandating multi-factor token verification at the identity gate, and sealing data-plane interactions into a cryptographically validated log trail, this architecture transforms generic storage into a resilient, production-hardened cloud vault.
