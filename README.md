@@ -40,6 +40,8 @@ Modern enterprise storage platforms are targeted relentlessly by sophisticated a
 
 ### Architecture Diagram
 
+<img width="1169" height="827" alt="Architecture Diagram For Project 1" src="https://github.com/user-attachments/assets/4c58f67e-cb76-40a4-94d9-1d44f40910b7" />
+
 ---
 
 ### Project Procedure
